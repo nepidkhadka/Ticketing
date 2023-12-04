@@ -1,9 +1,11 @@
 import React from 'react'
+import Navbar from './Components/Navbar'
 
 const App = () => {
+
   return (
    <>
-    <p className='bg-red-500' >TickTicketing</p>
+    <Navbar/>
    </>
   )
 }
