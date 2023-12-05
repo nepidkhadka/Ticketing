@@ -1,37 +1,81 @@
-import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { IoCalendarOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
-
+import CartContext from "../Context/CartContext";
 
 const Cart = () => {
+  const navigate = useNavigate();
   const [price, setprice] = useState({
-    ticketprice: "500",
+    ticketprice: 500,
     qty: 1,
-    totalprice: "",
+    subtotal: 500,
   });
-  const [currentMovie, setcurrentMovie] = useState();
-  const [loading, setloading] = useState(true);
 
+  const {ticketdata, setticketdata} = useContext(CartContext);
+
+  //UseState for Movie Data & Loading
+  const [currentMovie, setcurrentMovie] = useState();
+  const [loading, setLoading] = useState(true);
+
+  //API ID & URL
   const { id } = useParams();
   const URL = `https://api.themoviedb.org/3/movie/${id}?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US`;
 
-  useEffect(() => {
-    getdata();
-    setTimeout(() => {
-      setloading(false);
-    }, 600);
-  }, []);
-
-  const getdata = async () => {
-    const res = await fetch(URL);
-    const data = await res.json();
-    setcurrentMovie(data);
-    console.log(data);
+  //Minus Button Click Funtion
+  const handleClickMinus = () => {
+    if (price.qty > 1) {
+      setprice({
+        ...price,
+        qty: price.qty - 1,
+        subtotal: price.ticketprice * (price.qty - 1),
+      });
+    }
   };
 
+  //Plus Button Click Function
+  const handleClickPlus = () => {
+    if (price.qty < 5) {
+      setprice({
+        ...price,
+        qty: price.qty + 1,
+        subtotal: price.ticketprice * (price.qty + 1),
+      });
+    }
+  };
+
+  //Save Data To Cart Context
+  const handleCheckout = () => {
+    setticketdata({
+        ...ticketdata,
+        ticketprice:price.ticketprice,
+        moviename:currentMovie.original_title,
+        qty: price.qty,
+        subtotal: price.subtotal,
+    })
+    navigate("/checkout")
+     };
+
+  //SideEffects for Fetching API Data & To Set Loading Value To False
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(URL);
+        const data = await res.json();
+        setcurrentMovie(data);
+      } catch (error) {
+        console.error("Error fetching movie data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [URL]);
+
+  //Loading Animation
   if (loading)
     return (
       <div className="absolute left-2/4 top-1/2">
@@ -47,8 +91,9 @@ const Cart = () => {
     );
 
   return (
-    <div className="container py-20 px-6 mx-auto">
-      <div className="cart relative">
+    //Container For Movie & Event Box
+    <div className="container py-20 px-6 sm:px-1 mx-auto">
+      <div className="cart sm:relative flex flex-col items-center sm:block">
         <div className="moviebox max-w-[240px]">
           <Link to={`/movie/${currentMovie.id}`}>
             <div className="poster rounded-lg h-[340px] w-[240px] relative">
@@ -74,7 +119,7 @@ const Cart = () => {
             </p>
           </div>
         </div>
-        <div className="eventbox absolute top-0 right-0 h-[460px] w-[380px] bg-[#1c1c24] border border-[#252d3c] rounded-md p-4">
+        <div className="eventbox mt-8 sm:mt-0 sm:absolute top-0 right-0 h-[460px] w-[280px] sm:w-[380px] bg-[#1c1c24] border border-[#252d3c] rounded-md p-4">
           <h2 className="py-2 font-semibold text-xl">Event Details</h2>
           <div className="line w-full my-2 bg-[#252d3c] h-[1px]"></div>
           <div className="flex py-2 items-center gap-4">
@@ -107,18 +152,27 @@ const Cart = () => {
               <p className="font-bold py-1">USD ${price.ticketprice}.00</p>
             </div>
             <div className="flex gap-3">
-              <div className="bg-[#292932] h-8 w-8 rounded-md">
+              <div
+                onClick={handleClickMinus}
+                className="bg-[#292932] h-8 w-8 rounded-md"
+              >
                 <FaMinus className="inline-block ml-2 mt-1" />
               </div>
-              <div className="font-bold text-xl">
-                {price.qty}
-              </div>
-              <div className="bg-[#292932] h-8 w-8 rounded-md">
+              <div className="font-bold text-xl">{price.qty}</div>
+              <div
+                onClick={handleClickPlus}
+                className="bg-[#292932] h-8 w-8 rounded-md"
+              >
                 <FaPlus className="inline-block ml-2 mt-1" />
               </div>
             </div>
           </div>
-          <button className="bg-[#e14658] w-full p-2 rounded-md font-semibold " >Check Out for ${price.totalprice}.00</button>
+          <button
+            onClick={handleCheckout}
+            className="bg-[#e14658] w-full p-2 rounded-md font-semibold "
+          >
+            Check Out for ${price.subtotal}.00
+          </button>
         </div>
       </div>
     </div>
