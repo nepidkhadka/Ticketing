@@ -13,6 +13,16 @@ const Invoice = () => {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
   const day = currentDate.getDay();
+
+//   useEffect(()=>{
+//     setTimeout(()=>{
+//         const confirm = window.confirm("Save As PDF")
+//         if(confirm){
+//             window.print()
+//         }
+//     }, 2000)
+//   }, [])
+
   return (
     <>
       <header>
@@ -35,20 +45,20 @@ const Invoice = () => {
           </div>
         </div>
       </header>
-      <section className="bg-white h-screen">
+      <section className="bg-white min-h-screen max-h-max">
         <div className="container mx-auto">
           <h2 className="text-black font-semibold text-lg py-4">Invoice</h2>
           <div className="text-[#556987] flex justify-between py-2">
-            <p>Invoice to {userData.fullname}</p>
+            <p>Invoice to {userData.fullname?userData.fullname:"No User"}</p>
             <p>
               Invoice ID : YCCURW-{Math.floor(Math.random() * 990000) + 10000}
             </p>
           </div>
           <div className="text-[#556987] flex justify-between py-2 ">
             <p>
-              {userData.address}, {userData.city}
+              {userData.address?userData.address:"No Address"}, {userData.city?userData.city:"No City"}
               <br />
-              {userData.state}, {userData.country}
+              {userData.state?userData.state:"No State"}, {userData.country?userData.country:"No Country"}
             </p>
             <p>Order Date : {day + "/" + month + "/" + year}</p>
           </div>
@@ -88,7 +98,7 @@ const Invoice = () => {
                           1
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 font-medium">
-                          {ticketdata.moviename}
+                          {ticketdata.moviename?ticketdata.moviename:"No Event"}
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 font-medium">
                           Movie
@@ -120,35 +130,38 @@ const Invoice = () => {
               </div>
             </div>
           </div>
-            <div className="">
-              <div className="flex justify-between items-center">
-                <FiScissors className="text-black" />
-                <div className="border-dashed border-t-2 w-[95%]"></div>
-              </div>
-              <div className="border w-8/12 mt-4 flex p-6 gap-4">
-                <div className="rounded-lg h-[180px] w-[140px]">
-                <img
+          {ticketdata.qty > 0 &&
+            Array.from({ length: ticketdata.qty }).map((_,index) => (
+              <div key={index}>
+                <div className="flex justify-between items-center mt-4">
+                  <FiScissors className="text-black" />
+                  <div className="border-dashed border-t-2 w-[95%]"></div>
+                </div>
+                <div className="border w-8/12 mt-4 flex p-6 gap-4">
+                  <div className="rounded-lg h-[180px] w-[140px]">
+                    <img
                       className="h-full w-full rounded-lg"
                       src={`https://image.tmdb.org/t/p/original/${ticketdata.movieposter}`}
                     />
-                </div>
-                <div className="text-black p-4 mb-16">
-                  <h2 className="font-bold">{ticketdata.moviename}</h2>
-                  <p className="mt-2 text-[#556987]">
-                    Sat, Apr 30, 2022 11:30 AM
-                  </p>
-                  <HiMiniTicket className="text-red-500 inline" />
-                  <span className="px-2">x{ticketdata.qty}</span>
-                  <p className="text-[#556987]">
-                    Total:
-                    <span className="font-bold text-black">
-                      {" "}
-                      ${ticketdata.totalprice}{" "}
-                    </span>
-                  </p>
+                  </div>
+                  <div className="text-black p-4 mb-16">
+                    <h2 className="font-bold">{ticketdata.moviename}</h2>
+                    <p className="mt-2 text-[#556987]">
+                      Sat, Apr 30, 2022 11:30 AM
+                    </p>
+                    <HiMiniTicket className="text-red-500 inline" />
+                    <span className="px-2">x{ticketdata.qty}</span>
+                    <p className="text-[#556987]">
+                      Total:
+                      <span className="font-bold text-black">
+                        {" "}
+                        ${ticketdata.ticketprice}{" "}
+                      </span>
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
         </div>
       </section>
     </>
