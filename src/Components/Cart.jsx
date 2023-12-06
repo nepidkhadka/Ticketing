@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { IoCalendarOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa6";
@@ -14,7 +14,7 @@ const Cart = () => {
     subtotal: 500,
   });
 
-  const {ticketdata, setticketdata} = useContext(CartContext);
+  const { ticketdata, setticketdata } = useContext(CartContext);
 
   //UseState for Movie Data & Loading
   const [currentMovie, setcurrentMovie] = useState();
@@ -37,7 +37,7 @@ const Cart = () => {
 
   //Plus Button Click Function
   const handleClickPlus = () => {
-    if (price.qty < 5) {
+    if (price.qty < 10) {
       setprice({
         ...price,
         qty: price.qty + 1,
@@ -48,15 +48,17 @@ const Cart = () => {
 
   //Save Data To Cart Context
   const handleCheckout = () => {
+    const mytempsubtotal = price.subtotal;
     setticketdata({
-        ...ticketdata,
-        ticketprice:price.ticketprice,
-        moviename:currentMovie.original_title,
-        qty: price.qty,
-        subtotal: price.subtotal,
-    })
-    navigate("/checkout")
-     };
+      ...ticketdata,
+      ticketprice: price.ticketprice,
+      moviename: currentMovie.original_title,
+      qty: price.qty,
+      subtotal: price.subtotal,
+      totalprice : mytempsubtotal+ticketdata.tax
+    });
+    navigate("/checkout");
+  };
 
   //SideEffects for Fetching API Data & To Set Loading Value To False
   useEffect(() => {
@@ -91,91 +93,93 @@ const Cart = () => {
     );
 
   return (
-    //Container For Movie & Event Box
-    <div className="container py-20 px-6 sm:px-1 mx-auto">
-      <div className="cart sm:relative flex flex-col items-center sm:block">
-        <div className="moviebox max-w-[240px]">
-          <Link to={`/movie/${currentMovie.id}`}>
-            <div className="poster rounded-lg h-[340px] w-[240px] relative">
-              <img
-                className="h-full w-full rounded-lg"
-                src={`https://image.tmdb.org/t/p/original${currentMovie.poster_path}`}
-                alt={currentMovie.original_title}
-              />
-              <div className="absolute top-4 right-4 bg-[#1c3246] rounded-md text-white text-center">
-                <p className="text-sm font-medium px-4 py-2">Movies</p>
+    // Section & Container For Movie & Event Box
+    <section>
+      <div className="container py-20 px-6 sm:px-1 mx-auto">
+        <div className="cart sm:relative flex flex-col items-center sm:block">
+          <div className="moviebox max-w-[240px]">
+            <Link to={`/movie/${currentMovie.id}`}>
+              <div className="poster rounded-lg h-[340px] w-[240px] relative">
+                <img
+                  className="h-full w-full rounded-lg"
+                  src={`https://image.tmdb.org/t/p/original${currentMovie.poster_path}`}
+                  alt={currentMovie.original_title}
+                />
+                <div className="absolute top-4 right-4 bg-[#1c3246] rounded-md text-white text-center">
+                  <p className="text-sm font-medium px-4 py-2">Movies</p>
+                </div>
               </div>
-            </div>
-          </Link>
+            </Link>
 
-          <div className="details text-white text-center mt-2">
-            <h2 className=" text-xl font-bold">
-              {currentMovie.original_title.slice(0, 20)}
-            </h2>
-            {/* <p className=" font-extralight">{movie.overview.slice(0,60)+"..."}</p> */}
-            <p className="font-semibold">
-              {currentMovie.release_date} ●{" "}
-              {currentMovie.original_language.toUpperCase()}
-            </p>
-          </div>
-        </div>
-        <div className="eventbox mt-8 sm:mt-0 sm:absolute top-0 right-0 h-[460px] w-[280px] sm:w-[380px] bg-[#1c1c24] border border-[#252d3c] rounded-md p-4">
-          <h2 className="py-2 font-semibold text-xl">Event Details</h2>
-          <div className="line w-full my-2 bg-[#252d3c] h-[1px]"></div>
-          <div className="flex py-2 items-center gap-4">
-            <div className="icon grid bg-[#292932] h-8 w-8 rounded-full">
-              <IoCalendarOutline className="ml-2 mt-2" />
-            </div>
-            <div className="text inline">
-              <h4 className="text-[#98abc0]">Date and Time</h4>
-              <p className="font-medium">Sat, Apr 30, 2022 11:30 AM</p>
-            </div>
-          </div>
-          <div className="line w-full my-2 bg-[#252d3c] h-[1px]"></div>
-          <div className="flex py-2 items-center gap-4">
-            <div className="icon grid bg-[#292932] h-8 w-8 rounded-full">
-              <FaLocationDot className="ml-2 mt-2" />
-            </div>
-            <div className="text inline">
-              <h4 className="text-[#98abc0]">Location</h4>
-              <p className="font-medium">Kathmandu, Nepal</p>
-              <p className="text-sm my-2 cursor-pointer text-[#e14658]">
-                View On Map
+            <div className="details text-white text-center mt-2">
+              <h2 className=" text-xl font-bold">
+                {currentMovie.original_title.slice(0, 20)}
+              </h2>
+              {/* <p className=" font-extralight">{movie.overview.slice(0,60)+"..."}</p> */}
+              <p className="font-semibold">
+                {currentMovie.release_date} ●{" "}
+                {currentMovie.original_language.toUpperCase()}
               </p>
             </div>
           </div>
-          <div className="line w-full my-2 bg-[#252d3c] h-[1px]"></div>
-          <h2 className="py-2 font-semibold text-xl">Select Tickets</h2>
-          <div className="flex items-center justify-between">
-            <div className="p-2">
-              <p className="text-[#8799ac] py-1 ">1x Ticket(s)</p>
-              <p className="font-bold py-1">USD ${price.ticketprice}.00</p>
-            </div>
-            <div className="flex gap-3">
-              <div
-                onClick={handleClickMinus}
-                className="bg-[#292932] h-8 w-8 rounded-md"
-              >
-                <FaMinus className="inline-block ml-2 mt-1" />
+          <div className="eventbox mt-8 sm:mt-0 sm:absolute top-0 right-0 h-[460px] w-[280px] sm:w-[380px] bg-[#1c1c24] border border-[#252d3c] rounded-md p-4">
+            <h2 className="py-2 font-semibold text-xl">Event Details</h2>
+            <div className="line w-full my-2 bg-[#252d3c] h-[1px]"></div>
+            <div className="flex py-2 items-center gap-4">
+              <div className="icon grid bg-[#292932] h-8 w-8 rounded-full">
+                <IoCalendarOutline className="ml-2 mt-2" />
               </div>
-              <div className="font-bold text-xl">{price.qty}</div>
-              <div
-                onClick={handleClickPlus}
-                className="bg-[#292932] h-8 w-8 rounded-md"
-              >
-                <FaPlus className="inline-block ml-2 mt-1" />
+              <div className="text inline">
+                <h4 className="text-[#98abc0]">Date and Time</h4>
+                <p className="font-medium">Sat, Apr 30, 2022 11:30 AM</p>
               </div>
             </div>
+            <div className="line w-full my-2 bg-[#252d3c] h-[1px]"></div>
+            <div className="flex py-2 items-center gap-4">
+              <div className="icon grid bg-[#292932] h-8 w-8 rounded-full">
+                <FaLocationDot className="ml-2 mt-2" />
+              </div>
+              <div className="text inline">
+                <h4 className="text-[#98abc0]">Location</h4>
+                <p className="font-medium">Kathmandu, Nepal</p>
+                <p className="text-sm my-2 cursor-pointer text-[#e14658]">
+                  View On Map
+                </p>
+              </div>
+            </div>
+            <div className="line w-full my-2 bg-[#252d3c] h-[1px]"></div>
+            <h2 className="py-2 font-semibold text-xl">Select Tickets</h2>
+            <div className="flex items-center justify-between">
+              <div className="p-2">
+                <p className="text-[#8799ac] py-1 ">1x Ticket(s)</p>
+                <p className="font-bold py-1">USD ${price.ticketprice}.00</p>
+              </div>
+              <div className="flex gap-3">
+                <div
+                  onClick={handleClickMinus}
+                  className="bg-[#292932] h-8 w-8 rounded-md"
+                >
+                  <FaMinus className="inline-block ml-2 mt-1" />
+                </div>
+                <div className="font-bold text-xl">{price.qty}</div>
+                <div
+                  onClick={handleClickPlus}
+                  className="bg-[#292932] h-8 w-8 rounded-md"
+                >
+                  <FaPlus className="inline-block ml-2 mt-1" />
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={handleCheckout}
+              className="bg-[#e14658] w-full p-2 rounded-md font-semibold "
+            >
+              Check Out for ${price.subtotal}.00
+            </button>
           </div>
-          <button
-            onClick={handleCheckout}
-            className="bg-[#e14658] w-full p-2 rounded-md font-semibold "
-          >
-            Check Out for ${price.subtotal}.00
-          </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

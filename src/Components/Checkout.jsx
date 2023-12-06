@@ -1,17 +1,38 @@
 import React, { useContext } from "react";
 import CartContext from "../Context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
-  const { ticketdata } = useContext(CartContext);
+  const navigate =  useNavigate();
+
+  //Context Destrcturing For State Access
+  const { ticketdata, userData, setuserData } = useContext(CartContext);
+
+  // Two Way Bind For User Data Input
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setuserData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  //Form Validation
+  const validateForm=()=> {
+    if (userData.fullname.length == 0  || userData.email.length == 0 || userData.country.length == 0 || userData.state.length == 0 || userData.city.length == 0 || userData.zipcode.length == 0) {
+      alert('Invalid Form, Fill Up All Details')
+    }else{
+      navigate("/") 
+    }
+   
+  }
+
   return (
     <section>
-      <div className="container py-10 mx-auto">
+      <div className="container py-10 px-2 mx-auto">
         <div className="px-2 sm:p-0 text-xl font-medium">
           <h2>Order Confirmation</h2>
         </div>
         <div className="line w-full my-6 bg-[#252d3c] h-[1px]"></div>
-        <div className="flex justify-center sm:justify-between flex-wrap ">
-          <div className="bg-[#1c1c24] p-6 mt-6 rounded-md border-[#252d3c] border w-2/3 ">
+        <div className="flex justify-center sm:justify-between flex-wrap">
+          <div className="bg-[#1c1c24] p-6 mt-6 rounded-md border-[#252d3c] border w-3/5 ">
             <h4 className="text-lg">Information</h4>
             <form action="#" className="mt-8 grid grid-cols-6 gap-6">
               <div className="col-span-6">
@@ -23,6 +44,8 @@ const Checkout = () => {
                 </label>
 
                 <input
+                  onChange={handleFormChange}
+                  value={userData.fullname}
                   type="text"
                   id="fullname"
                   name="fullname"
@@ -40,9 +63,12 @@ const Checkout = () => {
                 </label>
 
                 <input
+                  onChange={handleFormChange}
+                  value={userData.email}
                   type="email"
                   id="email"
                   name="email"
+                  placeholder="eg. janecopper@xyz.com"
                   className="mt-2 w-full rounded-md h-10 p-4 outline-none border-[#252d3c] bg-inherit border"
                 />
               </div>
@@ -56,6 +82,8 @@ const Checkout = () => {
                 </label>
 
                 <input
+                  onChange={handleFormChange}
+                  value={userData.address}
                   type="text"
                   id="address"
                   name="address"
@@ -72,19 +100,25 @@ const Checkout = () => {
                 </label>
 
                 <select
+                  onChange={handleFormChange}
+                  value={userData.country}
+                  name="country"
                   id="country"
                   className="mt-2 w-full rounded-md h-10 p-2 outline-none dark:text-white border-[#252d3c] bg-inherit border"
                 >
-                  <option className="bg-[#252d3c]" value="nepal">
+                  <option className="bg-[#252d3c]" value="" disabled>
+                    Select a country
+                  </option>
+                  <option className="bg-[#252d3c]" value="Nepal">
                     Nepal
                   </option>
-                  <option className="bg-[#252d3c]" value="usa">
+                  <option className="bg-[#252d3c]" value="USA">
                     USA
                   </option>
-                  <option className="bg-[#252d3c]" value="china">
+                  <option className="bg-[#252d3c]" value="China">
                     China
                   </option>
-                  <option className="bg-[#252d3c]" value="canada">
+                  <option className="bg-[#252d3c]" value="Canada">
                     Canada
                   </option>
                 </select>
@@ -99,9 +133,11 @@ const Checkout = () => {
                 </label>
 
                 <input
+                  onChange={handleFormChange}
+                  value={userData.state}
                   type="text"
                   id="state"
-                  name="address"
+                  name="state"
                   className="mt-2 w-full rounded-md h-10 p-4 outline-none border-[#252d3c] bg-inherit border"
                 />
               </div>
@@ -115,9 +151,11 @@ const Checkout = () => {
                 </label>
 
                 <input
+                  onChange={handleFormChange}
+                  value={userData.city}
                   type="text"
                   id="city"
-                  name="address"
+                  name="city"
                   className="mt-2 w-full rounded-md h-10 p-4 outline-none border-[#252d3c] bg-inherit border"
                 />
               </div>
@@ -131,9 +169,13 @@ const Checkout = () => {
                 </label>
 
                 <input
-                  type="text"
+                  onChange={handleFormChange}
+                  value={userData.zipcode}
+                  type="number"
+                  pattern="[0-9]{5}"
                   id="zipcode"
-                  name="address"
+                  name="zipcode"
+                  max={5}
                   className="mt-2 w-full rounded-md h-10 p-4 outline-none border-[#252d3c] bg-inherit border"
                 />
               </div>
@@ -178,12 +220,19 @@ const Checkout = () => {
               <p className="text-[#98abc0]">
                 USD{" "}
                 <span className="text-white font-medium text-xl">
-                  ${ticketdata.subtotal + ticketdata.tax}
+                  ${ticketdata.totalprice}
                 </span>{" "}
               </p>
             </div>
             <div className="line w-full my-4 bg-[#252d3c] h-[1px]"></div>
-            <button className="bg-[#e14658] w-full p-2 rounded-md font-semibold ">
+            <button
+              onClick={() => {
+                validateForm();
+                console.log(userData);
+                console.log(ticketdata);
+              }}
+              className="bg-[#e14658] w-full p-2 rounded-md font-semibold "
+            >
               Confirm & Pay
             </button>
           </div>

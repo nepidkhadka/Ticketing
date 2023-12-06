@@ -20,11 +20,11 @@ export const CartProvider = ({ children }) => {
     country:"",
     state:"",
     city:"",
-    zipcode:null,
+    zipcode:"",
   });
 
   return (
-    <CartContext.Provider value={{ ticketdata, setticketdata }}>
+    <CartContext.Provider value={{ ticketdata, setticketdata, userData, setuserData }}>
       {children}
     </CartContext.Provider>
   );
