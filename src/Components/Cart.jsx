@@ -53,6 +53,7 @@ const Cart = () => {
       ...ticketdata,
       ticketprice: price.ticketprice,
       moviename: currentMovie.original_title,
+      movieposter : `https://image.tmdb.org/t/p/original${currentMovie.poster_path}`,
       qty: price.qty,
       subtotal: price.subtotal,
       totalprice : mytempsubtotal+ticketdata.tax

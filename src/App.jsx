@@ -1,9 +1,10 @@
 import React from "react";
 import Navbar from "./Components/Navbar";
-import { Route, Routes } from "react-router-dom";
 import Home from "./Components/Home";
 import Cart from "./Components/Cart";
 import Checkout from "./Components/Checkout.jsx";
+import Invoice from "./Components/Invoice.jsx";
+import { Route, Routes } from "react-router-dom";
 import { CartProvider } from "./Context/CartContext.jsx";
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
               </>
             }
           />
+          <Route path="/invoice" element={<Invoice />} />
         </Routes>
       </CartProvider>
     </>

@@ -19,7 +19,7 @@ const Checkout = () => {
     if (userData.fullname.length == 0  || userData.email.length == 0 || userData.country.length == 0 || userData.state.length == 0 || userData.city.length == 0 || userData.zipcode.length == 0) {
       alert('Invalid Form, Fill Up All Details')
     }else{
-      navigate("/") 
+      navigate("/invoice") 
     }
    
   }

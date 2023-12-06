@@ -11,6 +11,7 @@ export const CartProvider = ({ children }) => {
     tax: 130,
     discount: 0,
     totalprice:null,
+    movieposter:""
   });
 
   const [userData, setuserData] = useState({
