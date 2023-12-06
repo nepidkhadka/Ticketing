@@ -4,6 +4,14 @@
 
 This React project is about ticket booking system. It is developed using  React & Tailwind.
 
+## Tools & Technology Used
+- React
+- Tailwind
+- React Router DOM
+- React Icons
+- Context API (User & Ticket State Management)
+ - API : TheMovieDB(TMDB)
+
 ## Table of Contents
 
 - [Installation](#installation)
@@ -28,4 +36,4 @@ To use this project, follow these instructions:
     npm start
 ## OR, 
 
-> 🟢Live URL : 
+> 🟢Live URL : https://tick-ticketing-nine.vercel.app/
