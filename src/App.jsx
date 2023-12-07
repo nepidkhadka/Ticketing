@@ -23,7 +23,7 @@ const App = () => {
             }
           />
           <Route
-            path="/checkout/"
+            path="/checkout/:id"
             element={
               <>
                 <Navbar />
@@ -31,7 +31,7 @@ const App = () => {
               </>
             }
           />
-          <Route path="/invoice" element={<Invoice />} />
+          <Route path="/invoice/:id" element={<Invoice />} />
         </Routes>
       </CartProvider>
     </>

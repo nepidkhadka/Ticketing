@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { TbLocationCheck } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CartContext from "../Context/CartContext";
 import { FiScissors } from "react-icons/fi";
 import { HiMiniTicket } from "react-icons/hi2";
@@ -8,6 +8,9 @@ import { HiMiniTicket } from "react-icons/hi2";
 const Invoice = () => {
   const { userData, ticketdata } = useContext(CartContext);
 
+  //
+  const { id } = useParams();
+  
   // Random Order Date
   const currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -51,7 +54,7 @@ const Invoice = () => {
           <div className="text-[#556987] flex justify-between py-2">
             <p>Invoice to {userData.fullname?userData.fullname:"No User"}</p>
             <p>
-              Invoice ID : YCCURW-{Math.floor(Math.random() * 990000) + 10000}
+              Invoice ID : YCCURW-{id}
             </p>
           </div>
           <div className="text-[#556987] flex justify-between py-2 ">
@@ -95,7 +98,7 @@ const Invoice = () => {
                     <tbody>
                       <tr className="border-b dark:border-neutral-500">
                         <td className="whitespace-nowrap px-6 py-4 font-medium">
-                          1
+                          {id}
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 font-medium">
                           {ticketdata.moviename?ticketdata.moviename:"No Event"}

@@ -58,7 +58,7 @@ const Cart = () => {
       subtotal: price.subtotal,
       totalprice : mytempsubtotal+ticketdata.tax
     });
-    navigate("/checkout");
+    navigate("/checkout/"+id);
   };
 
   //SideEffects for Fetching API Data & To Set Loading Value To False
@@ -156,24 +156,24 @@ const Cart = () => {
                 <p className="font-bold py-1">USD ${price.ticketprice}.00</p>
               </div>
               <div className="flex gap-3">
-                <div
+                <button
                   onClick={handleClickMinus}
-                  className="bg-[#292932] h-8 w-8 rounded-md"
+                  className="bg-[#292932] h-8 w-8 rounded-md hover:bg-[#e14658]"
                 >
-                  <FaMinus className="inline-block ml-2 mt-1" />
-                </div>
+                  <FaMinus className="inline-block" />
+                </button>
                 <div className="font-bold text-xl">{price.qty}</div>
-                <div
+                <button
                   onClick={handleClickPlus}
-                  className="bg-[#292932] h-8 w-8 rounded-md"
+                  className="bg-[#292932] h-8 w-8 rounded-md hover:bg-[#e14658]"
                 >
-                  <FaPlus className="inline-block ml-2 mt-1" />
-                </div>
+                  <FaPlus className="inline-block" />
+                </button>
               </div>
             </div>
             <button
               onClick={handleCheckout}
-              className="bg-[#e14658] w-full p-2 rounded-md font-semibold "
+              className="bg-[#e14658] w-full p-2 rounded-md font-semibold"
             >
               Check Out for ${price.subtotal}.00
             </button>

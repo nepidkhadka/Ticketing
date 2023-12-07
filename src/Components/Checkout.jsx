@@ -1,28 +1,37 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import CartContext from "../Context/CartContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useFormik } from "formik";
+import { FormValidation } from "../Utils/FormValidation";
 
 const Checkout = () => {
-  const navigate =  useNavigate();
-
-  //Context Destrcturing For State Access
+  const navigate = useNavigate();
+  const fullNameRef = useRef();
+  const { id } = useParams();
   const { ticketdata, userData, setuserData } = useContext(CartContext);
 
-  // Two Way Bind For User Data Input
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setuserData((prev) => ({ ...prev, [name]: value }));
-  };
+  // Formik Form Validation
+  const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
+    initialValues: userData,
+    validationSchema: FormValidation,
+    onSubmit: (values) => {
+      setuserData({
+        fullname: values.fullname,
+        email: values.email,
+        address: values.address,
+        country: values.country,
+        state: values.state,
+        city: values.city,
+        zipcode: values.zipcode,
+      });
+      navigate("/invoice/" + id);
+    },
+  });
 
-  //Form Validation
-  const validateForm=()=> {
-    if (userData.fullname.length == 0  || userData.email.length == 0 || userData.country.length == 0 || userData.state.length == 0 || userData.city.length == 0 || userData.zipcode.length == 0) {
-      alert('Invalid Form, Fill Up All Details')
-    }else{
-      navigate("/invoice") 
-    }
-   
-  }
+  // AutoFocus To FullName Input
+  useEffect(() => {
+    fullNameRef.current.focus();
+  }, []);
 
   return (
     <section>
@@ -34,7 +43,10 @@ const Checkout = () => {
         <div className="flex justify-center sm:justify-between flex-wrap">
           <div className="bg-[#1c1c24] p-6 mt-6 rounded-md border-[#252d3c] border w-3/5 ">
             <h4 className="text-lg">Information</h4>
-            <form action="#" className="mt-8 grid grid-cols-6 gap-6">
+            <form
+              onSubmit={handleSubmit}
+              className="mt-8 grid grid-cols-6 gap-6"
+            >
               <div className="col-span-6">
                 <label
                   htmlFor="fullname"
@@ -44,14 +56,23 @@ const Checkout = () => {
                 </label>
 
                 <input
-                  onChange={handleFormChange}
-                  value={userData.fullname}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.fullname}
+                  ref={fullNameRef}
                   type="text"
                   id="fullname"
                   name="fullname"
                   placeholder="eg. Jane Copper"
                   className="mt-2 w-full rounded-md h-10 p-4 outline-none border-[#252d3c] bg-inherit border"
                 />
+                <br />
+                {errors.fullname && (
+                  <small className="text-red-500 p-2 font-medium">
+                    {errors.fullname}
+                  </small>
+                )}
+                <br />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
@@ -63,14 +84,22 @@ const Checkout = () => {
                 </label>
 
                 <input
-                  onChange={handleFormChange}
-                  value={userData.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.email}
                   type="email"
                   id="email"
                   name="email"
                   placeholder="eg. janecopper@xyz.com"
                   className="mt-2 w-full rounded-md h-10 p-4 outline-none border-[#252d3c] bg-inherit border"
                 />
+                <br />
+                {errors.email && (
+                  <small className="text-red-500 p-2 font-medium">
+                    {errors.email}
+                  </small>
+                )}
+                <br />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
@@ -82,13 +111,21 @@ const Checkout = () => {
                 </label>
 
                 <input
-                  onChange={handleFormChange}
-                  value={userData.address}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.address}
                   type="text"
                   id="address"
                   name="address"
                   className="mt-2 w-full rounded-md h-10 p-4 outline-none border-[#252d3c] bg-inherit border"
                 />
+                <br />
+                {errors.address && (
+                  <small className="text-red-500 p-2 font-medium">
+                    {errors.address}
+                  </small>
+                )}
+                <br />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
@@ -100,8 +137,9 @@ const Checkout = () => {
                 </label>
 
                 <select
-                  onChange={handleFormChange}
-                  value={userData.country}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.country}
                   name="country"
                   id="country"
                   className="mt-2 w-full rounded-md h-10 p-2 outline-none dark:text-white border-[#252d3c] bg-inherit border"
@@ -122,6 +160,13 @@ const Checkout = () => {
                     Canada
                   </option>
                 </select>
+                <br />
+                {errors.country && (
+                  <small className="text-red-500 p-2 font-medium">
+                    {errors.country}
+                  </small>
+                )}
+                <br />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
@@ -133,13 +178,21 @@ const Checkout = () => {
                 </label>
 
                 <input
-                  onChange={handleFormChange}
-                  value={userData.state}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.state}
                   type="text"
                   id="state"
                   name="state"
                   className="mt-2 w-full rounded-md h-10 p-4 outline-none border-[#252d3c] bg-inherit border"
                 />
+                <br />
+                {errors.state && (
+                  <small className="text-red-500 p-2 font-medium">
+                    {errors.state}
+                  </small>
+                )}
+                <br />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
@@ -151,13 +204,21 @@ const Checkout = () => {
                 </label>
 
                 <input
-                  onChange={handleFormChange}
-                  value={userData.city}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.city}
                   type="text"
                   id="city"
                   name="city"
                   className="mt-2 w-full rounded-md h-10 p-4 outline-none border-[#252d3c] bg-inherit border"
                 />
+                <br />
+                {errors.city && (
+                  <small className="text-red-500 p-2 font-medium">
+                    {errors.city}
+                  </small>
+                )}
+                <br />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
@@ -169,15 +230,22 @@ const Checkout = () => {
                 </label>
 
                 <input
-                  onChange={handleFormChange}
-                  value={userData.zipcode}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.zipcode}
                   type="number"
                   pattern="[0-9]{5}"
                   id="zipcode"
                   name="zipcode"
-                  max={5}
                   className="mt-2 w-full rounded-md h-10 p-4 outline-none border-[#252d3c] bg-inherit border"
                 />
+                <br />
+                {errors.zipcode && (
+                  <small className="text-red-500 p-2 font-medium">
+                    {errors.zipcode}
+                  </small>
+                )}
+                <br />
               </div>
             </form>
           </div>
@@ -226,11 +294,8 @@ const Checkout = () => {
             </div>
             <div className="line w-full my-4 bg-[#252d3c] h-[1px]"></div>
             <button
-              onClick={() => {
-                validateForm();
-                console.log(userData);
-                console.log(ticketdata);
-              }}
+              onClick={() => handleSubmit()}
+              type="button"
               className="bg-[#e14658] w-full p-2 rounded-md font-semibold "
             >
               Confirm & Pay

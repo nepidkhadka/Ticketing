@@ -21,10 +21,18 @@ const Navbar = () => {
                 </div>
                 <div className="hidden sm:block menu text-white">
                   <ul className="flex sm:gap-2 md:gap-8 font-normal cursor-pointer ">
-                    <li>Home</li>
-                    <li>Concerts</li>
-                    <li>Movies</li>
-                    <li>Threater Events</li>
+                    <Link to={"/"}>
+                      <li>Home</li>
+                    </Link>
+                    <Link>
+                      <li>Concerts</li>
+                    </Link>
+                    <Link>
+                      <li>Movies</li>
+                    </Link>
+                    <Link>
+                      <li>Threater Events</li>
+                    </Link>
                   </ul>
                 </div>
               </div>

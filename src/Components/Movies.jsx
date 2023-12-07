@@ -35,7 +35,7 @@ const Movies = () => {
     <section>
       <div className="bg-[#13131a] h-full">
         <div className="container py-10 mx-auto">
-          <div className="flex gap-16 items-center justify-center flex-wrap">
+          <div className="flex gap-4 sm:gap-16 items-center justify-center flex-wrap">
             {movies.slice(0, 10).map((movie, i) => (
               <div key={i} className="moviebox max-w-[240px]">
                 <Link to={`/movie/${movie.id}`}>
