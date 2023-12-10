@@ -296,7 +296,7 @@ const Checkout = () => {
             <button
               onClick={() => handleSubmit()}
               type="button"
-              className="bg-[#e14658] w-full p-2 rounded-md font-semibold "
+              className="bg-[#FFA732] w-full p-2 rounded-md font-semibold "
             >
               Confirm & Pay
             </button>

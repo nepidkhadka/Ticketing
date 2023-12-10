@@ -1,16 +1,16 @@
-# TickTicketing - React + Tailwind 🔥
+# Ticketing - React + Tailwind 🔥
 
 ## Description
 
 This React project is about ticket booking system. It is developed using  React & Tailwind.
 
 ## Tools & Technology Used
-- React
-- Tailwind
-- React Router DOM
-- React Icons
+- [React](https://react.dev/)
+- [Tailwind](https://tailwindcss.com/)
+- [React Router DOM](https://reactrouter.com/en/main)
+- [React Icons](https://react-icons.github.io/react-icons/)
 - Context API (User & Ticket State Management)
- - API : TheMovieDB(TMDB)
+ - `API` : TheMovieDB(TMDB)
 
 ## Table of Contents
 

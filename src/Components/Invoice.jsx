@@ -29,7 +29,7 @@ const Invoice = () => {
   return (
     <>
       <header>
-        <div className="bg-[#e14658] w-full h-20">
+        <div className="bg-[#FFA732] w-full h-20">
           <div className="container mx-auto">
             <nav>
               <div className="w-full h-20 flex items-center">
@@ -38,7 +38,7 @@ const Invoice = () => {
                     <TbLocationCheck className="ml-2 sm:w-8 sm:h-10 h-8 w-6 text-white" />
                     <Link to="/">
                       <span className="text-white sm:text-lg md:text-2xl font-medium cursor-pointer">
-                        TickTicketing
+                        Ticketing
                       </span>
                     </Link>
                   </div>

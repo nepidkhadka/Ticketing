@@ -15,7 +15,7 @@ const Navbar = () => {
                   <TbLocationCheck className="ml-2 sm:w-8 sm:h-10 h-8 w-6 text-white" />
                   <Link to="/">
                     <span className="text-white sm:text-lg md:text-2xl font-medium cursor-pointer">
-                      TickTicketing
+                      Ticketing
                     </span>
                   </Link>
                 </div>
@@ -39,7 +39,7 @@ const Navbar = () => {
 
               <div className="loginregister hidden sm:flex items-center sm:gap-2 md:gap-8 text-white font-medium cursor-pointer">
                 <div className="">Login</div>
-                <div className="bg-[#e14658] py-2 px-4 rounded-md">
+                <div className="bg-[#FFA732] py-2 px-4 rounded-md">
                   Register
                 </div>
               </div>
